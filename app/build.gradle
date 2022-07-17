@@ -1,0 +1,35 @@
+plugins {
+    id 'application'
+}
+
+group = 'com.bjmh.mccg'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+
+    mavenLocal()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'com.bjmh.lib:neutron:1.3.1'
+}
+
+application {
+    mainClass = 'com.bjmh.mccg.Main'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+jar {
+  manifest {
+    attributes(
+      'Main-Class': 'com.bjmh.mccg.Main'
+    )
+  }
+}
