@@ -8,15 +8,30 @@ import com.bjmh.lib.io.config.ConfigSection;
 
 public class Task {
     private String name;
-    private String forType;
-    private String operationPath;
-    private String fileType;
+    private String type;
+    private String path;
     private String[] template;
+
+    /**
+     * @param name
+     * @param type
+     * @param path
+     * @param template
+     */
+    public Task(String name, String type, String path, String[] template) {
+        this.name = name;
+        this.type = type;
+        this.path = path;
+        this.template = template;
+    }
 
     public void run(ConfigSection section) {
         try (FileWriter writer = new FileWriter(Main.USER_DIR + "/assets/"
-                + ((ConfigOption) Main.GLOBAL_CONFIG.getChild(Main.MODID)).getValue() + Main.FILE_SEPARATOR + operationPath
-                + Main.FILE_SEPARATOR + section.getName() + "." + fileType)) {
+                + ((ConfigOption) Main.GLOBAL_CONFIG.getChild(Main.MODID)).getValue() + Main.FILE_SEPARATOR
+                + path.replace("${name}", section.getName())
+                        .replace("${modid}", ((ConfigOption) Main.GLOBAL_CONFIG.getChild(Main.MODID)).getValue())
+                        .replace("${path}", ((ConfigOption) section.getChild(Main.PATH)).getValue())
+                        .replace("${type}", ((ConfigOption) section.getChild(Main.TYPE)).getValue()))) {
             for (String line : template) {
                 writer.write(line.replace("${name}", section.getName())
                         .replace("${modid}", ((ConfigOption) Main.GLOBAL_CONFIG.getChild(Main.MODID)).getValue())
@@ -38,52 +53,17 @@ public class Task {
     }
 
     /**
-     * @param name the name to set
+     * @return the type
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @return the forType
+     * @return the path
      */
-    public String getForType() {
-        return forType;
-    }
-
-    /**
-     * @param forType the forType to set
-     */
-    public void setForType(String forType) {
-        this.forType = forType;
-    }
-
-    /**
-     * @return the operationPath
-     */
-    public String getOperationPath() {
-        return operationPath;
-    }
-
-    /**
-     * @param operationPath the operationPath to set
-     */
-    public void setOperationPath(String operationPath) {
-        this.operationPath = operationPath;
-    }
-
-    /**
-     * @return the fileType
-     */
-    public String getFileType() {
-        return fileType;
-    }
-
-    /**
-     * @param fileType the fileType to set
-     */
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
+    public String getPath() {
+        return path;
     }
 
     /**
@@ -91,12 +71,5 @@ public class Task {
      */
     public String[] getTemplate() {
         return template;
-    }
-
-    /**
-     * @param template the template to set
-     */
-    public void setTemplate(String[] template) {
-        this.template = template;
     }
 }

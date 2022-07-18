@@ -1,8 +1,7 @@
 {
     "name": "genBlockState",
-    "forType": "block",
-    "operationPath": "blockstates/",
-    "fileType": "json",
+    "type": "block",
+    "path": "blockstates/${name}.json",
     "template": [
         "{",
         "    \"variants\": {",

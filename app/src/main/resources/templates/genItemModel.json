@@ -1,8 +1,7 @@
 {
     "name": "genItemModel",
-    "forType": "item",
-    "operationPath": "models/item/",
-    "fileType": "json",
+    "type": "item",
+    "path": "models/item/${name}.json",
     "template": [
         "{",
         "    \"parent\": \"${modid}:item${path}${name}\"",

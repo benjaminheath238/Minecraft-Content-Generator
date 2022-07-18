@@ -1,8 +1,7 @@
 {
     "name": "genBlockModel",
-    "forType": "block",
-    "operationPath": "models/block/",
-    "fileType": "json",
+    "type": "block",
+    "path": "models/block/${name}.json",
     "template": [
         "{",
         "    \"parent\": \"block/cube_all\",",
