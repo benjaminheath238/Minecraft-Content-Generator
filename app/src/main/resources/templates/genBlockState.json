@@ -1,0 +1,13 @@
+{
+    "name": "genBlockState",
+    "forType": "block",
+    "operationPath": "models/block/",
+    "fileType": "json",
+    "template": [
+        "{",
+        "    \"variants\": {",
+        "      \"\": { \"model\": \"${modid}:block${path}${name}\" }",
+        "    }",
+        "}"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "genBlockModel",
+    "forType": "block",
+    "operationPath": "models/block/",
+    "fileType": "json",
+    "template": [
+        "{",
+        "    \"parent\": \"block/cube_all\",",
+        "    \"textures\": {",
+        "        \"all\": \"${modid}:block${path}${name}\"",
+        "    }",
+        "}"
+    ]
+}

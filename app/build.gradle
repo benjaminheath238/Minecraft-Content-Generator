@@ -22,6 +22,9 @@ dependencies {
     implementation('com.google.code.gson:gson:2.9.0')
     
     implementation('com.bjmh.lib:neutron:1.3.1')
+
+    compile('com.google.code.gson:gson:2.9.0')
+
     compile('com.bjmh.lib:neutron:1.3.1')  
   }
 
