@@ -47,10 +47,7 @@ public class Main {
         parseConfigFiles();
 
         parseTasks();
-
         runTasks();
-
-        // oldMethod();
 
         SCANNNER.close();
     }
