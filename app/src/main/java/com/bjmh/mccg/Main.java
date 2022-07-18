@@ -17,6 +17,7 @@ import com.bjmh.lib.io.config.ConfigOption;
 import com.bjmh.lib.io.config.ConfigSection;
 import com.bjmh.lib.io.config.Configuration;
 import com.bjmh.lib.io.config.ParserMethods;
+import com.bjmh.mccg.task.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -41,7 +42,7 @@ public class Main {
     public static final Scanner SCANNNER = new Scanner(System.in);
 
     public static void main(String[] args) {
-        redirectexceptionStream();
+        redirectExceptionStream();
 
         createConfigFile();
         parseConfigFiles();
@@ -164,7 +165,7 @@ public class Main {
         System.err.println("| Content config file: " + CONTENT_CONFIG);
     }
 
-    private static void redirectexceptionStream() {
+    private static void redirectExceptionStream() {
         try {
             System.setErr(new PrintStream(new File(USER_DIR + "/latest.log")));
         } catch (FileNotFoundException e) {

@@ -1,10 +1,11 @@
-package com.bjmh.mccg;
+package com.bjmh.mccg.task;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 import com.bjmh.lib.io.config.ConfigOption;
 import com.bjmh.lib.io.config.ConfigSection;
+import com.bjmh.mccg.Main;
 
 public class Task {
     private String name;
