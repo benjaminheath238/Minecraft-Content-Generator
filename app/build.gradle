@@ -11,12 +11,19 @@ repositories {
     mavenLocal()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-
-    implementation 'com.google.guava:guava:30.1.1-jre'
-    implementation 'com.bjmh.lib:neutron:1.3.1'
+configurations {
+    extraLibs
 }
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+
+    implementation('com.google.guava:guava:30.1.1-jre')
+    implementation('com.google.code.gson:gson:2.9.0')
+    
+    implementation('com.bjmh.lib:neutron:1.3.1')
+    extraLibs('com.bjmh.lib:neutron:1.3.1')  
+  }
 
 application {
     mainClass = 'com.bjmh.mccg.Main'
@@ -27,6 +34,10 @@ tasks.named('test') {
 }
 
 jar {
+  from {
+    configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+
   manifest {
     attributes(
       'Main-Class': 'com.bjmh.mccg.Main'
