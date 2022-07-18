@@ -140,52 +140,6 @@ public class Main {
         });
     }
 
-    private static void oldMethod() {
-        CONTENT_CONFIG.foreach(new ConfigConsumer() {
-            @Override
-            public void accept(ConfigNode node) {
-                System.err.println("+- Loading node: " + node.getName() + ", of type: " + node.getType()
-                        + ", with parent: " + node.getParent().getName());
-
-                if (!node.getType().equals(ConfigNode.Type.COMPLEX_OPTION)) {
-                    System.err.println("| This option is not a complex option.");
-                    return;
-                }
-
-                ConfigSection section = (ConfigSection) node;
-
-                if (section.getChild(TYPE) == null) {
-                    System.err.println("| This option has no type variable.");
-                    return;
-                }
-
-                System.out.println("+- Loading option: " + section.getName());
-
-                if (section.getChild(BLOCK_STATE) != null
-                        && ((ConfigOption) section.getChild(BLOCK_STATE)).getValue().equals(TRUE)
-                        && ((ConfigOption) section.getChild(TYPE)).getValue().equals(BLOCK)) {
-                    // Generate block states
-                }
-
-                if (section.getChild(MODEL) != null
-                        && ((ConfigOption) section.getChild(MODEL)).getValue().equals(TRUE)) {
-                    if (((ConfigOption) section.getChild(TYPE)).getValue().equals(BLOCK)) {
-                        // Generate block and item block models
-                    } else if (((ConfigOption) section.getChild(TYPE)).getValue().equals(ITEM)) {
-                        // Generate item model
-                    } else {
-                        System.err.println("| The type of this option does not support a model.");
-                    }
-                }
-
-                if (section.getChild(LOCALE) != null
-                        && ((ConfigOption) section.getChild(LOCALE)).getValue().equals(TRUE)) {
-                    // Generate locale
-                }
-            }
-        });
-    }
-
     private static void parseConfigFiles() {
         System.err.println("+- Parsing global config file.");
         GLOBAL_CONFIG.parse(USER_DIR + "/mccg.ini", ParserMethods.INI_PARSER_WITH_COMPLEX_OPTIONS);
