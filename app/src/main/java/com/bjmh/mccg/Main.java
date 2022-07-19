@@ -200,6 +200,8 @@ public class Main {
         extractResource("/tasks/genBlockState.groovy", USER_DIR + "/tasks/genBlockState.groovy");
         extractResource("/tasks/genModel.groovy", USER_DIR + "/tasks/genModel.groovy");
         extractResource("/tasks/genTexture.groovy", USER_DIR + "/tasks/genTexture.groovy");
+        extractResource("/tasks/genLocale.groovy", USER_DIR + "/tasks/genLocale.groovy");
+
 
         extractResource("/templates/templateBlockState.json", USER_DIR + "/templates/templateBlockState.json");
         extractResource("/templates/templateBlockModel.json", USER_DIR + "/templates/templateBlockModel.json");
