@@ -3,8 +3,8 @@ plugins {
 }
 
 group = 'com.bjmh.mccg'
-version = '2.1.1.0'
-
+// MAJOR.API.MINOR.PATCH
+version = '2.1.1.1'
 repositories {
     mavenCentral()
 
