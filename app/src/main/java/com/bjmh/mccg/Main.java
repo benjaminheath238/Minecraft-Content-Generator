@@ -160,6 +160,7 @@ public class Main {
 
         extractResource("/templates/templateBlockState.json", USER_DIR + "/templates/templateBlockState.json");
         extractResource("/templates/templateBlockModel.json", USER_DIR + "/templates/templateBlockModel.json");
+        extractResource("/templates/templateBlockItemModel.json", USER_DIR + "/templates/templateBlockItemModel.json");
         extractResource("/templates/templateItemModel.json", USER_DIR + "/templates/templateItemModel.json");
 
         System.err.println("Resource extraction complete.");

@@ -1,7 +1,7 @@
 {
     "variants": {
         "": {
-            "model": "${modid}:block${path}${name}"
+            "model": "${modid}:block${path}${id}"
         }
     }
 }
