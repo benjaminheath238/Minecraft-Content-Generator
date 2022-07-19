@@ -1,6 +1,6 @@
 // Load the block state template
 println "Loading json."
-def template = loadJson("${dir}/templates/templateBlockState.json");
+def template = loadJson("${dir}/templates/templateBlockState.json")
 
 // Update variables in the template
 println "Updating json."
