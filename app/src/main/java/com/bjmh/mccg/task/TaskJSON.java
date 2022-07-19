@@ -21,14 +21,14 @@ public abstract class TaskJSON extends Task {
     public void run(ConfigSection section) {
         variables = new HashMap<>();
         
-        variables.put("modid", modid);
-
         for (ConfigNode node : section.getChildren()) {
             if (!(node instanceof ConfigOption))
                 continue;
 
             variables.put(node.getName(), ((ConfigOption) node).getValue());
         }
+
+        variables.put("modid", modid);
 
         super.run(section);
     }
@@ -61,7 +61,7 @@ public abstract class TaskJSON extends Task {
     public void updateJsonVariables(List<String> json, Map<String, String> variables) {
         for (String line : json) {
             for (String key : variables.keySet()) {
-                line.replace("${" + key + "}", variables.get(key));
+                line = line.replace("${" + key + "}", variables.get(key));
             }
         }
     }
