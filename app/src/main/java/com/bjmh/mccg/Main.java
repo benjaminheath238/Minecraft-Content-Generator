@@ -25,14 +25,8 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
 public class Main {
-    public static final String TYPE_KEY = "type";
-    public static final String NAME_KEY = "name";
-    public static final String PATH_KEY = "path";
-    public static final String IS_KEY = "is";
-    public static final String MODID_KEY = "modid";
-
-    public static final String TRUE_VALUE = "true";
-    public static final String FALSE_VALUE = "false";
+    private static final String PATH_KEY = "path";
+    private static final String MODID_KEY = "modid";
 
     public static final String USER_DIR = System.getProperty("user.dir") + "/";
 
@@ -63,7 +57,7 @@ public class Main {
 
                 ConfigSection section = (ConfigSection) node;
 
-                if (section.getChild(TYPE_KEY) == null) {
+                if (section.getChild("type") == null) {
                     return;
                 }
 
@@ -72,7 +66,7 @@ public class Main {
 
                 for (String task : TASKS.keySet()) {
                     if (section.getChild(task) != null
-                            && ((ConfigOption) section.getChild(task)).getValue().equals(TRUE_VALUE)) {
+                            && ((ConfigOption) section.getChild(task)).getValue().equals("true")) {
                         System.err.println("Running task " + task);
                         System.out.println("Running task " + task);
                         TASKS.get(task).run(section);
@@ -118,7 +112,7 @@ public class Main {
 
             CompilerConfiguration config = new CompilerConfiguration();
 
-            String scriptClass = ((ConfigOption) section.getChild(IS_KEY)).getValue();
+            String scriptClass = ((ConfigOption) section.getChild("is")).getValue();
 
             System.err.println("Loading script class " + scriptClass);
 
@@ -143,7 +137,8 @@ public class Main {
             }
         }
 
-        System.err.println("Task loading complete. " + TASKS.size() + "/" + ((ConfigSection) GLOBAL_CONFIG.getChild("Tasks")).getChildren().size());
+        System.err.println("Task loading complete. " + TASKS.size() + "/"
+                + ((ConfigSection) GLOBAL_CONFIG.getChild("Tasks")).getChildren().size());
     }
 
     private static void extractResources() {
@@ -160,7 +155,7 @@ public class Main {
         extractResource("/templates/templateBlockState.json", USER_DIR + "templates/templateBlockState.json");
         extractResource("/templates/templateBlockModel.json", USER_DIR + "templates/templateBlockModel.json");
         extractResource("/templates/templateItemModel.json", USER_DIR + "templates/templateItemModel.json");
-    
+
         System.err.println("Resource extraction complete.");
     }
 
