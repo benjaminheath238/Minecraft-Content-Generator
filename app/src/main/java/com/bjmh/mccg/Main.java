@@ -74,6 +74,7 @@ public class Main {
 
                     System.err.println("Running task " + task);
                     System.out.println("Running task " + task);
+                    
                     TASKS.get(task).run(section);
                 }
             }

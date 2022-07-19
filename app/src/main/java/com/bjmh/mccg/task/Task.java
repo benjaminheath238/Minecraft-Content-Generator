@@ -7,6 +7,7 @@ import groovy.lang.Script;
 
 public abstract class Task extends Script {
     protected final String modid = Main.GLOBAL_CONFIG.getChildValue("modid");
+    protected final String dir = Main.USER_DIR;
 
     protected final String pathBlockStates = Main.USER_DIR + "assets/blockstates/";
     protected final String pathModelsBlock = Main.USER_DIR + "assets/models/block/";
