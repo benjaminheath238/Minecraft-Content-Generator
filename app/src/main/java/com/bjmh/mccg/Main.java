@@ -28,7 +28,7 @@ public class Main {
     private static final String PATH_KEY = "path";
     private static final String MODID_KEY = "modid";
 
-    public static final String USER_DIR = System.getProperty("user.dir") + "/";
+    public static final String USER_DIR = System.getProperty("user.dir");
 
     public static final Configuration GLOBAL_CONFIG = new Configuration("global");
     public static final Configuration CONTENT_CONFIG = new Configuration("content");
@@ -66,7 +66,8 @@ public class Main {
 
                 for (String task : TASKS.keySet()) {
                     try {
-                        if (!section.getChildValue(task).equals("true")) continue;
+                        if (!section.getChildValue(task).equals("true"))
+                            continue;
                     } catch (NullPointerException e) {
                         System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
                         e.printStackTrace();
@@ -74,7 +75,7 @@ public class Main {
 
                     System.err.println("Running task " + task);
                     System.out.println("Running task " + task);
-                    
+
                     TASKS.get(task).run(section);
                 }
             }
@@ -84,7 +85,7 @@ public class Main {
     private static void loadConfigFiles() {
         System.err.println("Loading config files.");
         System.err.println("Loading global config.");
-        GLOBAL_CONFIG.parse(USER_DIR + "mccg.ini", ParserMethods.INI_PARSER_WITH_COMPLEX_OPTIONS);
+        GLOBAL_CONFIG.parse(USER_DIR + "/mccg.ini", ParserMethods.INI_PARSER_WITH_COMPLEX_OPTIONS);
 
         if (GLOBAL_CONFIG.getChild(MODID_KEY) == null) {
             System.err.println("No modid variable was found. Requesting user input.");
@@ -125,7 +126,7 @@ public class Main {
 
             GroovyShell shell = new GroovyShell(Main.class.getClassLoader(), new Binding(), config);
 
-            String taskPath = USER_DIR + section.getChildValue(PATH_KEY);
+            String taskPath = USER_DIR + "/" + section.getChildValue(PATH_KEY);
 
             try {
                 System.err.println("Compiling task " + taskPath);
@@ -148,18 +149,18 @@ public class Main {
 
     private static void extractResources() {
         System.err.println("Extracting resources from jar.");
-        new File(USER_DIR + "tasks/").mkdir();
-        new File(USER_DIR + "templates/").mkdir();
+        new File(USER_DIR + "/tasks/").mkdir();
+        new File(USER_DIR + "/templates/").mkdir();
 
-        extractResource("/mccg.ini", USER_DIR + "mccg.ini");
+        extractResource("/mccg.ini", USER_DIR + "/mccg.ini");
 
-        extractResource("/tasks/genBlockState.groovy", USER_DIR + "tasks/genBlockState.groovy");
-        extractResource("/tasks/genModel.groovy", USER_DIR + "tasks/genModel.groovy");
-        extractResource("/tasks/genTexture.groovy", USER_DIR + "tasks/genTexture.groovy");
+        extractResource("/tasks/genBlockState.groovy", USER_DIR + "/tasks/genBlockState.groovy");
+        extractResource("/tasks/genModel.groovy", USER_DIR + "/tasks/genModel.groovy");
+        extractResource("/tasks/genTexture.groovy", USER_DIR + "/tasks/genTexture.groovy");
 
-        extractResource("/templates/templateBlockState.json", USER_DIR + "templates/templateBlockState.json");
-        extractResource("/templates/templateBlockModel.json", USER_DIR + "templates/templateBlockModel.json");
-        extractResource("/templates/templateItemModel.json", USER_DIR + "templates/templateItemModel.json");
+        extractResource("/templates/templateBlockState.json", USER_DIR + "/templates/templateBlockState.json");
+        extractResource("/templates/templateBlockModel.json", USER_DIR + "/templates/templateBlockModel.json");
+        extractResource("/templates/templateItemModel.json", USER_DIR + "/templates/templateItemModel.json");
 
         System.err.println("Resource extraction complete.");
     }
@@ -184,11 +185,11 @@ public class Main {
 
     private static void redirectExceptionStream() {
         try {
-            System.setErr(new PrintStream(new File(USER_DIR + "latest.log")));
+            System.setErr(new PrintStream(new File(USER_DIR + "/latest.log")));
             System.err.println("Error stream redirected to file.");
         } catch (FileNotFoundException e) {
             System.err.println(
-                    "Error stream redirection failed. The file " + USER_DIR + "latest.log" + " was not found.");
+                    "Error stream redirection failed. The file " + USER_DIR + "/latest.log" + " was not found.");
             e.printStackTrace();
         }
     }
