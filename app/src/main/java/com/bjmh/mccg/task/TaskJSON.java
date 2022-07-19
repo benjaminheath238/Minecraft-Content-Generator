@@ -63,4 +63,10 @@ public abstract class TaskJSON extends Task {
             }
         }
     }
+
+    public void appendToJson(String path, String data) {
+        List<String> json = loadJson(path);
+        json.add(data);
+        saveJson(json, path);
+    }
 }
