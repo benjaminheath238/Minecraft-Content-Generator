@@ -66,7 +66,7 @@ public class Main {
 
                 for (String task : TASKS.keySet()) {
                     try {
-                        if (!Util.INSTANCE.getChildValue(task, section).equals("true")) continue;
+                        if (!section.getChildValue(task).equals("true")) continue;
                     } catch (NullPointerException e) {
                         System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
                         e.printStackTrace();
@@ -100,7 +100,7 @@ public class Main {
         }
 
         System.err.println("Loading content config.");
-        CONTENT_CONFIG.parse(Util.INSTANCE.getChildValue(PATH_KEY, GLOBAL_CONFIG),
+        CONTENT_CONFIG.parse(GLOBAL_CONFIG.getChildValue(PATH_KEY),
                 ParserMethods.INI_PARSER_WITH_INHERITANCE);
 
         System.err.println("Config file loading complete.");
@@ -108,7 +108,7 @@ public class Main {
 
     private static void loadTasks() {
         System.err.println("Loading tasks.");
-        for (ConfigNode node : Util.INSTANCE.getChildAsSection("Tasks", GLOBAL_CONFIG).getChildren()) {
+        for (ConfigNode node : GLOBAL_CONFIG.getChildAsSection("Tasks").getChildren()) {
             if (!node.getType().equals(ConfigNode.Type.COMPLEX_OPTION))
                 continue;
 
@@ -116,7 +116,7 @@ public class Main {
 
             CompilerConfiguration config = new CompilerConfiguration();
 
-            String scriptClass = Util.INSTANCE.getChildValue("is", section);
+            String scriptClass = section.getChildValue("is");
 
             System.err.println("Loading script class " + scriptClass);
 
@@ -124,7 +124,7 @@ public class Main {
 
             GroovyShell shell = new GroovyShell(Main.class.getClassLoader(), new Binding(), config);
 
-            String taskPath = USER_DIR + Util.INSTANCE.getChildValue(PATH_KEY, section);
+            String taskPath = USER_DIR + section.getChildValue(PATH_KEY);
 
             try {
                 System.err.println("Compiling task " + taskPath);
@@ -142,7 +142,7 @@ public class Main {
         }
 
         System.err.println("Task loading complete. " + TASKS.size() + "/"
-                + Util.INSTANCE.getChildAsSection("Tasks", GLOBAL_CONFIG).getChildren().size());
+                + GLOBAL_CONFIG.getChildAsSection("Tasks").getChildren().size());
     }
 
     private static void extractResources() {

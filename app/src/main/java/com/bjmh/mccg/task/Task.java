@@ -3,13 +3,10 @@ package com.bjmh.mccg.task;
 import com.bjmh.lib.io.config.ConfigOption;
 import com.bjmh.lib.io.config.ConfigSection;
 import com.bjmh.mccg.Main;
-import com.bjmh.mccg.Util;
 
 import groovy.lang.Script;
 
 public abstract class Task extends Script {
-    protected final Util util = Util.INSTANCE;
-
     protected final String modid = ((ConfigOption) Main.GLOBAL_CONFIG.getChild("modid")).getValue();
 
     protected final String pathBlockStates = Main.USER_DIR + "assets/blockstates/";
