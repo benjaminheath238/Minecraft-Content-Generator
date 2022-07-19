@@ -125,6 +125,7 @@ public class Main {
 
     private static void runOnStartTasks() {
         System.err.println("Running start-up tasks.");
+        if (TASKS.get("start") == null) return;
         for (String task : TASKS.get("start").keySet()) {
             System.err.println("Running task " + task);
             System.out.println("Running task " + task);
@@ -166,6 +167,7 @@ public class Main {
 
     private static void runOnEndTasks() {
         System.err.println("Running shutdown tasks.");
+        if (TASKS.get("start") == null) return;
         for (String task : TASKS.get("end").keySet()) {
             System.err.println("Running task " + task);
             System.out.println("Running task " + task);
@@ -225,6 +227,7 @@ public class Main {
         extractResource("/tasks/genModel.groovy", USER_DIR + "/tasks/genModel.groovy");
         extractResource("/tasks/genTexture.groovy", USER_DIR + "/tasks/genTexture.groovy");
         extractResource("/tasks/genLocale.groovy", USER_DIR + "/tasks/genLocale.groovy");
+        extractResource("/tasks/onStart.groovy", USER_DIR + "/tasks/onStart.groovy");
 
         extractResource("/templates/templateBlockState.json", USER_DIR + "/templates/templateBlockState.json");
         extractResource("/templates/templateBlockModel.json", USER_DIR + "/templates/templateBlockModel.json");
