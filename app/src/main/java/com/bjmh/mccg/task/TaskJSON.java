@@ -32,16 +32,16 @@ public abstract class TaskJSON extends Task {
     }
 
     public List<String> loadJson(String path) {
-        List<String> lines = new ArrayList<>();
+        List<String> json = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(path)))) {
             while (reader.ready()) {
-                lines.add(reader.readLine());
+                json.add(reader.readLine());
             }
         } catch (IOException e) {
             System.err.println("An exception occurred while loading template from: " + path);
             e.printStackTrace();
         }
-        return lines;
+        return json;
     }
 
     public void saveJson(List<String> json, String path) {
@@ -58,15 +58,25 @@ public abstract class TaskJSON extends Task {
 
     public void updateJsonVariables(List<String> json, Map<String, String> variables) {
         for (int i = 0; i < json.size(); i++) {
-            for (String key : variables.keySet()) {
-                json.set(i, json.get(i).replace("${" + key + "}", variables.get(key)));
+            for (Map.Entry<String, String> entry : variables.entrySet()) {
+                json.set(i, json.get(i).replace("${" + entry.getKey() + "}", entry.getValue()));
             }
         }
     }
 
     public void appendToJson(String path, String data) {
         List<String> json = loadJson(path);
-        json.add(data);
+        json.set(json.size() - 1, data);
+        json.add("}");
         saveJson(json, path);
+    }
+
+    public void createJson(String path) {
+        saveJson(java.util.Arrays.asList("{", "}"), path);
+    }
+
+    public void createJsonIfAbsent(String path) {
+        if (new File(path).exists()) return;
+        createJson(path);
     }
 }

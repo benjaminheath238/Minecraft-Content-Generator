@@ -13,7 +13,6 @@ import java.util.Scanner;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 
-import com.bjmh.lib.io.config.ConfigConsumer;
 import com.bjmh.lib.io.config.ConfigNode;
 import com.bjmh.lib.io.config.ConfigOption;
 import com.bjmh.lib.io.config.ConfigSection;
@@ -33,76 +32,28 @@ public class Main {
 
     public static final Configuration GLOBAL_CONFIG = new Configuration("global");
     public static final Configuration CONTENT_CONFIG = new Configuration("content");
-    public static final Map<String, Task> TASKS = new HashMap<>();
+    public static final Map<String, Map<String, Task>> TASKS = new HashMap<>();
     public static final Scanner SCANNNER = new Scanner(System.in);
 
     public static void main(String[] args) {
         redirectExceptionStream();
         extractResources();
 
-        loadConfigFiles();
+        parseGlobalConfig();
+        checkGlobalVars();
+        parseContentConfig();
+
         loadTasks();
 
-        parseContent();
+        runOnStartTasks();
+        runOnEachTasks();
+        runOnEndTasks();
 
         SCANNNER.close();
     }
 
-    private static void parseContent() {
+    private static void parseContentConfig() {
         System.err.println("Parsing content config.");
-        CONTENT_CONFIG.foreach(new ConfigConsumer() {
-            @Override
-            public void accept(ConfigNode node) {
-                if (!node.getType().equals(ConfigNode.Type.COMPLEX_OPTION))
-                    return;
-
-                ConfigSection section = (ConfigSection) node;
-
-                if (section.getChild("type") == null) {
-                    return;
-                }
-
-                System.err.println("Parsing content " + section);
-                System.out.println("Parsing content " + section.getName());
-
-                for (String task : TASKS.keySet()) {
-                    try {
-                        if (!section.getChildValue(task).equals("true"))
-                            continue;
-                    } catch (NullPointerException e) {
-                        System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
-                        e.printStackTrace();
-                    }
-
-                    System.err.println("Running task " + task);
-                    System.out.println("Running task " + task);
-
-                    TASKS.get(task).run(section);
-                }
-            }
-        });
-    }
-
-    private static void loadConfigFiles() {
-        System.err.println("Loading config files.");
-        System.err.println("Loading global config.");
-        GLOBAL_CONFIG.parse(USER_DIR + "/mccg.ini", ParserMethods.INI_PARSER_WITH_COMPLEX_OPTIONS);
-
-        if (GLOBAL_CONFIG.getChild(MODID_KEY) == null) {
-            System.err.println("No modid variable was found. Requesting user input.");
-            System.out.println("Please enter mod ID.");
-            GLOBAL_CONFIG.addChild(
-                    new ConfigOption(GLOBAL_CONFIG, MODID_KEY, ConfigNode.Type.SIMPLE_OPTION, SCANNNER.nextLine()));
-        }
-
-        if (GLOBAL_CONFIG.getChild(PATH_KEY) == null) {
-            System.err.println("No path variable was found. Requesting user input.");
-            System.out.println("Please enter content config file path.");
-            GLOBAL_CONFIG.addChild(
-                    new ConfigOption(GLOBAL_CONFIG, PATH_KEY, ConfigNode.Type.SIMPLE_OPTION, SCANNNER.nextLine()));
-        }
-
-        System.err.println("Loading content config.");
         CONTENT_CONFIG.parse(GLOBAL_CONFIG.getChildValue(PATH_KEY),
                 new ParserMethod() {
                     private ConfigSection current = null;
@@ -147,8 +98,79 @@ public class Main {
                         }
                     }
                 });
+        System.err.println("Content config parsed.");
+        }
 
-        System.err.println("Config file loading complete.");
+    private static void checkGlobalVars() {
+        if (GLOBAL_CONFIG.getChild(MODID_KEY) == null) {
+            System.err.println("No modid variable was found. Requesting user input.");
+            System.out.println("Please enter mod ID.");
+            GLOBAL_CONFIG.addChild(
+                    new ConfigOption(GLOBAL_CONFIG, MODID_KEY, ConfigNode.Type.SIMPLE_OPTION, SCANNNER.nextLine()));
+        }
+
+        if (GLOBAL_CONFIG.getChild(PATH_KEY) == null) {
+            System.err.println("No path variable was found. Requesting user input.");
+            System.out.println("Please enter content config file path.");
+            GLOBAL_CONFIG.addChild(
+                    new ConfigOption(GLOBAL_CONFIG, PATH_KEY, ConfigNode.Type.SIMPLE_OPTION, SCANNNER.nextLine()));
+        }
+    }
+
+    private static void parseGlobalConfig() {
+        System.err.println("Parsing global config.");
+        GLOBAL_CONFIG.parse(USER_DIR + "/mccg.ini", ParserMethods.INI_PARSER_WITH_COMPLEX_OPTIONS);
+        System.err.println("Global config parsed.");
+    }
+
+    private static void runOnStartTasks() {
+        System.err.println("Running start-up tasks.");
+        for (String task : TASKS.get("start").keySet()) {
+            System.err.println("Running task " + task);
+            System.out.println("Running task " + task);
+            TASKS.get("start").get(task).run();
+        }
+    }
+
+    private static void runOnEachTasks() {
+        System.err.println("Parsing content config.");
+        CONTENT_CONFIG.foreach(node -> {
+            if (!node.getType().equals(ConfigNode.Type.COMPLEX_OPTION))
+                return;
+
+            ConfigSection section = (ConfigSection) node;
+
+            if (section.getChild("type") == null) {
+                return;
+            }
+
+            System.err.println("Parsing content " + section);
+            System.out.println("Parsing content " + section.getName());
+
+            for (String task : TASKS.get("each").keySet()) {
+                try {
+                    if (!section.getChildValue(task).equals("true"))
+                        continue;
+                } catch (NullPointerException e) {
+                    System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
+                    e.printStackTrace();
+                }
+
+                System.err.println("Running task " + task);
+                System.out.println("Running task " + task);
+
+                TASKS.get("each").get(task).run(section);
+            }
+        });
+    }
+
+    private static void runOnEndTasks() {
+        System.err.println("Running shutdown tasks.");
+        for (String task : TASKS.get("end").keySet()) {
+            System.err.println("Running task " + task);
+            System.out.println("Running task " + task);
+            TASKS.get("end").get(task).run();
+        }
     }
 
     private static void loadTasks() {
@@ -176,7 +198,9 @@ public class Main {
 
                 Task task = (Task) shell.parse(new File(taskPath));
 
-                TASKS.put(section.getName(), task);
+                TASKS.computeIfAbsent(section.getChildValue("on"), v -> new HashMap<>());
+
+                TASKS.get(section.getChildValue("on")).put(section.getName(), task);
             } catch (CompilationFailedException e) {
                 System.err.println("Failed to compile task. Task " + taskPath + " could not be compiled.");
                 e.printStackTrace();
@@ -201,7 +225,6 @@ public class Main {
         extractResource("/tasks/genModel.groovy", USER_DIR + "/tasks/genModel.groovy");
         extractResource("/tasks/genTexture.groovy", USER_DIR + "/tasks/genTexture.groovy");
         extractResource("/tasks/genLocale.groovy", USER_DIR + "/tasks/genLocale.groovy");
-
 
         extractResource("/templates/templateBlockState.json", USER_DIR + "/templates/templateBlockState.json");
         extractResource("/templates/templateBlockModel.json", USER_DIR + "/templates/templateBlockModel.json");

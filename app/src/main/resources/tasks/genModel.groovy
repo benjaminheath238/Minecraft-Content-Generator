@@ -1,11 +1,16 @@
+// Layers are not operated on. See genTexture
 if (section.getChildValue("layer").equals("true")) return;
 
+// Handle blocks and items in the correct way
 if (section.getChildValue("type").equals("block")) {
     genBlockModel()
     genBlockItemModel()
 } else if (section.getChildValue("type").equals("item")) {
     genItemModel()
 }
+
+// The code below generates models using templates
+// All are very similar so for more detail see genBlockState
 
 void genBlockModel() {
     new File("${pathModelsBlock}${section.getChildValue("path")}").mkdirs()

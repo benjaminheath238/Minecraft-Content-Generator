@@ -8,3 +8,6 @@ bin
 # Compiled java
 *.class
 *.jar
+
+# VSCode
+.vscode/

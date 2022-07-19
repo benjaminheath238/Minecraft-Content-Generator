@@ -1,9 +1,15 @@
+// Layers are not operated on. See genTexture
+// Only blocks have block states
 if (section.getChildValue("layer").equals("true") || !section.getChildValue("type").equals("block")) return;
 
-new File("${pathBlockStates}${section.getChildValue("path")}").mkdirs();
+// Create the path to this block state
+new File("${pathBlockStates}/").mkdirs();
 
+// Load the block state template
 def template = loadJson("${dir}/templates/templateBlockState.json");
 
+// Modify the template with the standard variables
 updateJsonVariables(template, variables)
 
-saveJson(template, "${pathBlockStates}${section.getChildValue("path")}${section.getName()}.json")
+// Save the template under the correct name
+saveJson(template, "${pathBlockStates}/${section.getChildValue("id")}.json")
