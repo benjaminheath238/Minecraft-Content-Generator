@@ -9,12 +9,12 @@ import groovy.lang.Script;
 public abstract class Task extends Script {
     protected final String modid = ((ConfigOption) Main.GLOBAL_CONFIG.getChild("modid")).getValue();
 
-    protected final String blockStatesPath = Main.USER_DIR + "assets/blockstates/";
-    protected final String blockModelsPath = Main.USER_DIR + "assets/models/block/";
-    protected final String itemModelsPath = Main.USER_DIR + "assets/models/item/";
-    protected final String blockTexturesPath = Main.USER_DIR + "assets/textures/block/";
-    protected final String itemTexturesPath = Main.USER_DIR + "assets/texutes/item/";
-    protected final String langPath = Main.USER_DIR + "assets/lang/";
+    protected final String pathBlockStates = Main.USER_DIR + "assets/blockstates/";
+    protected final String pathModelsBlock = Main.USER_DIR + "assets/models/block/";
+    protected final String pathModelsItem = Main.USER_DIR + "assets/models/item/";
+    protected final String pathTexturesBlock = Main.USER_DIR + "assets/textures/block/";
+    protected final String pathTexturesItem = Main.USER_DIR + "assets/texutes/item/";
+    protected final String pathLang = Main.USER_DIR + "assets/lang/";
 
     protected ConfigSection section;
 
