@@ -66,15 +66,15 @@ public class Main {
 
                 for (String task : TASKS.keySet()) {
                     try {
-                        if (Util.INSTANCE.getChildValue(task, section).equals("true")) {
-                            System.err.println("Running task " + task);
-                            System.out.println("Running task " + task);
-                            TASKS.get(task).run(section);
-                        }
+                        if (!Util.INSTANCE.getChildValue(task, section).equals("true")) continue;
                     } catch (NullPointerException e) {
                         System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
                         e.printStackTrace();
                     }
+
+                    System.err.println("Running task " + task);
+                    System.out.println("Running task " + task);
+                    TASKS.get(task).run(section);
                 }
             }
         });
