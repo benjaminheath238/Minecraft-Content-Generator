@@ -65,8 +65,7 @@ public class Main {
                 System.out.println("Parsing content " + section.getName());
 
                 for (String task : TASKS.keySet()) {
-                    if (section.getChild(task) != null
-                            && ((ConfigOption) section.getChild(task)).getValue().equals("true")) {
+                    if (Util.INSTANCE.getChildValue(task, section).equals("true")) {
                         System.err.println("Running task " + task);
                         System.out.println("Running task " + task);
                         TASKS.get(task).run(section);
@@ -96,7 +95,7 @@ public class Main {
         }
 
         System.err.println("Loading content config.");
-        CONTENT_CONFIG.parse(((ConfigOption) GLOBAL_CONFIG.getChild(PATH_KEY)).getValue(),
+        CONTENT_CONFIG.parse(Util.INSTANCE.getChildValue(PATH_KEY, GLOBAL_CONFIG),
                 ParserMethods.INI_PARSER_WITH_INHERITANCE);
 
         System.err.println("Config file loading complete.");
@@ -104,7 +103,7 @@ public class Main {
 
     private static void loadTasks() {
         System.err.println("Loading tasks.");
-        for (ConfigNode node : ((ConfigSection) GLOBAL_CONFIG.getChild("Tasks")).getChildren()) {
+        for (ConfigNode node : Util.INSTANCE.getChildAsSection("Tasks", GLOBAL_CONFIG).getChildren()) {
             if (!node.getType().equals(ConfigNode.Type.COMPLEX_OPTION))
                 continue;
 
@@ -112,7 +111,7 @@ public class Main {
 
             CompilerConfiguration config = new CompilerConfiguration();
 
-            String scriptClass = ((ConfigOption) section.getChild("is")).getValue();
+            String scriptClass = Util.INSTANCE.getChildValue("is", section);
 
             System.err.println("Loading script class " + scriptClass);
 
@@ -120,7 +119,7 @@ public class Main {
 
             GroovyShell shell = new GroovyShell(Main.class.getClassLoader(), new Binding(), config);
 
-            String taskPath = USER_DIR + ((ConfigOption) section.getChild(PATH_KEY)).getValue();
+            String taskPath = USER_DIR + Util.INSTANCE.getChildValue(PATH_KEY, section);
 
             try {
                 System.err.println("Compiling task " + taskPath);
@@ -138,7 +137,7 @@ public class Main {
         }
 
         System.err.println("Task loading complete. " + TASKS.size() + "/"
-                + ((ConfigSection) GLOBAL_CONFIG.getChild("Tasks")).getChildren().size());
+                + Util.INSTANCE.getChildAsSection("Tasks", GLOBAL_CONFIG).getChildren().size());
     }
 
     private static void extractResources() {
