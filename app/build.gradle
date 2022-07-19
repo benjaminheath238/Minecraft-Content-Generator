@@ -8,7 +8,7 @@ group = 'com.bjmh.mccg'
 // API: Incompatible scripting changes
 // MINOR: compatible additions
 // PATCH: compatible fixes
-version = '2.4.4.3'
+version = '2.4.4.4'
 
 repositories {
     mavenCentral()

@@ -3,8 +3,8 @@ import com.bjmh.lib.io.config.ConfigSection
 
 if (section.getChild("layer") != null && section.getChildValue("layer").equals("true")) return
 
-def base = section.getChild("size") != null : newImage(section.getChildValue("size"))
-                                            ? newImage("16x16")
+def base = section.getChild("size") != null ? newImage(section.getChildValue("size"))
+                                            : newImage("16x16")
 
 for (int i = 0; true; i++) {
     if (section.getChild("layer_${i}") == null)
