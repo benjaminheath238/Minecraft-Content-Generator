@@ -18,6 +18,7 @@ import com.bjmh.lib.io.config.ConfigNode;
 import com.bjmh.lib.io.config.ConfigOption;
 import com.bjmh.lib.io.config.ConfigSection;
 import com.bjmh.lib.io.config.Configuration;
+import com.bjmh.lib.io.config.ParserMethod;
 import com.bjmh.lib.io.config.ParserMethods;
 import com.bjmh.mccg.task.Task;
 
@@ -103,7 +104,49 @@ public class Main {
 
         System.err.println("Loading content config.");
         CONTENT_CONFIG.parse(GLOBAL_CONFIG.getChildValue(PATH_KEY),
-                ParserMethods.INI_PARSER_WITH_INHERITANCE);
+                new ParserMethod() {
+                    private ConfigSection current = null;
+
+                    @Override
+                    public void parse(String line, Configuration config) {
+                        line = ParserMethods.removeComments(line);
+
+                        if (line.isEmpty())
+                            return;
+
+                        if (ParserMethods.isSubHeader(line)) {
+                            current = ParserMethods.inheritOptions(ParserMethods.parseSubHeader(line, config));
+                        } else if (ParserMethods.isHeader(line)) {
+                            current = ParserMethods.parseHeader(line, config);
+                        } else if (ParserMethods.isComplexOption(line)) {
+                            ConfigSection section = ParserMethods.inheritOptions(
+                                    ParserMethods.parseComplexOption(line,
+                                            ParserMethods.firstNonNull(current, config)));
+
+                            section.addChild(
+                                    new ConfigOption(section, "id", ConfigNode.Type.SIMPLE_OPTION, section.getName()));
+
+                            ParserMethods.firstNonNull(current, config)
+                                    .addChild(section);
+                        } else if (ParserMethods.isNullMapOrArray(line)) {
+                            // Catch the case of an empty array or map
+                        } else if (ParserMethods.isMap(line)) {
+                            ParserMethods.firstNonNull(current, config)
+                                    .addChild(ParserMethods.inheritOptions(
+                                            ParserMethods.parseMap(line, ParserMethods.firstNonNull(current, config))));
+                        } else if (ParserMethods.isArray(line)) {
+                            ParserMethods.firstNonNull(current, config)
+                                    .addChild(ParserMethods.inheritOptions(
+                                            ParserMethods.parseArray(line,
+                                                    ParserMethods.firstNonNull(current, config))));
+                        } else {
+                            ParserMethods.firstNonNull(current, config)
+                                    .addChild(
+                                            ParserMethods.parseSimpleOption(line,
+                                                    ParserMethods.firstNonNull(current, config)));
+                        }
+                    }
+                });
 
         System.err.println("Config file loading complete.");
     }
