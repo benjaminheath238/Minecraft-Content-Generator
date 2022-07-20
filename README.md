@@ -6,7 +6,7 @@ MCCG is a complete rework of the project Minecraft Data Generator (MCDG). MCCG h
 
 ---
 
-## Installation {#ad}
+## Installation
 
 ### Requirements
 
@@ -25,13 +25,11 @@ MCCG is a complete rework of the project Minecraft Data Generator (MCDG). MCCG h
 
 ## How to Use
 
-Create a `.ini` file. Add to this file all the resources to generate.
+> The following is WIP, it can and may change at any time and is not guaranteed to be accurate
 
-The structure of this file explained in detail can be found [here](https://github.com/benjaminheath238/Neutron/blob/master/docs/config.md#Parsing). The parser used is INI_WITH_ARRAYS_AND_MAPS.
+Create a content file (`[some name].ini`). Add to this file all the resources to generate. The structure of this file explained in detail can be found [here](https://github.com/benjaminheath238/Neutron/blob/master/docs/config.md#Parsing). The parser used is INI_WITH_ARRAYS_AND_MAPS. Each complex option represents a resource entry. Each entry can have the paramenters and tasks listed below.
 
-Each complex option represents a resource entry. Each entry can have the paramenters and tasks listed below.
-
-#### Paramenters
+### Paramenters
 
 | Name    | Value                                                                   | Required |
 |---------|-------------------------------------------------------------------------|----------|
@@ -42,7 +40,7 @@ Each complex option represents a resource entry. Each entry can have the paramen
 | name    | The name to use in localisation                                         | false    |
 | size    | `NxN` where 0 <= N <= 2^31-1                                            | false    |
 
-#### Tasks
+### Tasks
 
 | Name          | Applicable to Types |
 |---------------|---------------------|
@@ -51,15 +49,15 @@ Each complex option represents a resource entry. Each entry can have the paramen
 | genLocale     | All                 |
 | genTexture    | `item`, `block`     |
 
-On first run the program will create a file called `mccg.ini` in this file the mod's id and the path to the content file can be added.
+On first run MCCG will generate a file called `mccg.ini` in this file the mod's id and the path to the content file can be added.
 
 Finally In the mods resources directory run the jar file from a terminal/shell with the command `java -jar mccg-[version here].jar` this will run all the tasks generating the resources.
 
-### Advanced Usage
+## Advanced Usage
 
-On first launch MCCG will generate in the directory it was run from two directories one called `tasks` containing groovy scripts and one called `templates` containing json files. It will also generate two files called `mccg.ini` and `latest.log`.
+On first run MCCG will generate in the directory it was run from two directories one called `tasks` containing groovy scripts and one called `templates` containing json files. It will also generate two files called `mccg.ini` and `latest.log`.
 
-The `tasks` directory contains groovy scripts these scripts can be registered in the `mccg.ini` file. Tasks take the following parameters.
+The `tasks` directory contains groovy scripts these scripts can be registered in the `mccg.ini` file under the `Tasks` section. Tasks take the following parameters.
 
 | Name | Value                                               | Required |
 |------|-----------------------------------------------------|----------|
@@ -67,7 +65,7 @@ The `tasks` directory contains groovy scripts these scripts can be registered in
 | on   | `start`, `each`, `end`                              | true     |
 | path | The path to this script, from the current directory | true     |
 
-The `templates` directory contains json templates for use by `TaskJSON`. These templates include block states, block models, block item models and item models. A template can have variables in by adding `${var name}` where the variable comes from a paramenter.
+The `templates` directory contains json templates for use by `TaskJSON`. These templates include block states, block models, block item models and item models. A template can have variables in by adding `${var name}` where the variable comes from a paramenter in the users content file.
 
 ---
 
