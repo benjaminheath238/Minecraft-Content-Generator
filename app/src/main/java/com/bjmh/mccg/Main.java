@@ -99,7 +99,7 @@ public class Main {
                     }
                 });
         System.err.println("Content config parsed.");
-        }
+    }
 
     private static void checkGlobalVars() {
         if (GLOBAL_CONFIG.getChild(MODID_KEY) == null) {
@@ -125,7 +125,8 @@ public class Main {
 
     private static void runOnStartTasks() {
         System.err.println("Running start-up tasks.");
-        if (TASKS.get("start") == null) return;
+        if (TASKS.get("start") == null)
+            return;
         for (String task : TASKS.get("start").keySet()) {
             System.err.println("Running task " + task);
             System.out.println("Running task " + task);
@@ -167,7 +168,8 @@ public class Main {
 
     private static void runOnEndTasks() {
         System.err.println("Running shutdown tasks.");
-        if (TASKS.get("end") == null) return;
+        if (TASKS.get("end") == null)
+            return;
         for (String task : TASKS.get("end").keySet()) {
             System.err.println("Running task " + task);
             System.out.println("Running task " + task);

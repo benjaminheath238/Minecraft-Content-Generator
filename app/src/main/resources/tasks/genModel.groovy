@@ -1,11 +1,11 @@
 // Layers are not operated on. See genTexture
-if (section.getChildValue("layer").equals("true")) return;
+if (section.getChildValue('layer') == 'true') { return }
 
 // Handle blocks and items in the correct way
-if (section.getChildValue("type").equals("block")) {
+if (section.getChildValue('type') == 'block') {
     genBlockModel()
     genBlockItemModel()
-} else if (section.getChildValue("type").equals("item")) {
+} else if (section.getChildValue('type') == 'item') {
     genItemModel()
 }
 
@@ -13,31 +13,31 @@ if (section.getChildValue("type").equals("block")) {
 // All are very similar so for more detail see genBlockState
 
 void genBlockModel() {
-    new File("${pathModelsBlock}${section.getChildValue("path")}").mkdirs()
-    
-    def template = loadJson("${dir}/templates/templateBlockModel.json")
+    new File("${pathModelsBlock}${section.getChildValue('path')}").mkdirs()
+
+    List<String> template = loadJson("${dir}/templates/templateBlockModel.json")
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsBlock}${section.getChildValue("path")}${section.getName()}.json")
+    saveJson(template, "${pathModelsBlock}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
 }
 
 void genBlockItemModel() {
-    new File("${pathModelsItem}${section.getChildValue("path")}").mkdirs()
-    
-    def template = loadJson("${dir}/templates/templateBlockItemModel.json")
+    new File("${pathModelsItem}${section.getChildValue('path')}").mkdirs()
+
+    List<String> template = loadJson("${dir}/templates/templateBlockItemModel.json")
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsItem}${section.getChildValue("path")}${section.getName()}.json")
+    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
 }
 
 void genItemModel() {
-    new File("${pathModelsItem}${section.getChildValue("path")}").mkdirs()
-    
-    def template = loadJson("${dir}/templates/templateItemModel.json")
+    new File("${pathModelsItem}${section.getChildValue('path')}").mkdirs()
+
+    List<String> template = loadJson("${dir}/templates/templateItemModel.json")
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsItem}${section.getChildValue("path")}${section.getName()}.json")
+    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
 }

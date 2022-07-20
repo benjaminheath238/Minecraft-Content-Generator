@@ -8,7 +8,7 @@ group = 'com.bjmh.mccg'
 // API: Incompatible scripting changes
 // MINOR: compatible additions
 // PATCH: compatible fixes
-version = '2.4.5.2'
+version = '2.4.5.3'
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.9.0')
     
     implementation('com.bjmh.lib:neutron:1.5.1')
-
+    
     compile('org.codehaus.groovy:groovy:3.0.11')
 
     compile('com.google.code.gson:gson:2.9.0')
