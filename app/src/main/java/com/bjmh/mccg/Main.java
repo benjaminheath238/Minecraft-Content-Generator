@@ -150,13 +150,8 @@ public class Main {
             System.out.println("Parsing content " + section.getName());
 
             for (String task : TASKS.get("each").keySet()) {
-                try {
-                    if (!section.getChildValue(task).equals("true"))
-                        continue;
-                } catch (NullPointerException e) {
-                    System.err.println("Failed to complete task " + task + ". This may be because it was not set.");
-                    e.printStackTrace();
-                }
+                if (!("true").equals(section.getChildValue(task)))
+                    continue;
 
                 System.err.println("Running task " + task);
                 System.out.println("Running task " + task);
