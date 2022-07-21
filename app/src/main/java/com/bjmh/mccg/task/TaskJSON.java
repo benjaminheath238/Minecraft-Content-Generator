@@ -66,6 +66,7 @@ public abstract class TaskJSON extends Task {
 
     public void appendToJson(String path, String data) {
         List<String> json = loadJson(path);
+        json.set(json.size() - 2, json.get(json.size() - 2) + ",");
         json.set(json.size() - 1, data);
         json.add("}");
         saveJson(json, path);
