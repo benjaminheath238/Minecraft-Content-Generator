@@ -13,7 +13,7 @@ public abstract class Task extends Script {
     protected final String pathModelsBlock = Main.USER_DIR + "/assets/" + modid + "/models/block";
     protected final String pathModelsItem = Main.USER_DIR + "/assets/" + modid + "/models/item";
     protected final String pathTexturesBlock = Main.USER_DIR + "/assets/" + modid + "/textures/block";
-    protected final String pathTexturesItem = Main.USER_DIR + "/assets/" + modid + "/texutes/item";
+    protected final String pathTexturesItem = Main.USER_DIR + "/assets/" + modid + "/textues/item";
     protected final String pathLang = Main.USER_DIR + "/assets/" + modid + "/lang";
 
     protected ConfigSection section;
