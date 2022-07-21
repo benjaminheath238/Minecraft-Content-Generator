@@ -19,7 +19,7 @@ void genBlockModel() {
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsBlock}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
+    saveJson(template, "${pathModelsBlock}${section.getChildValue('path')}${section.getChildValue('id')}.json")
 }
 
 void genBlockItemModel() {
@@ -29,7 +29,7 @@ void genBlockItemModel() {
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
+    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildValue('id')}.json")
 }
 
 void genItemModel() {
@@ -39,5 +39,5 @@ void genItemModel() {
 
     updateJsonVariables(template, variables)
 
-    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildVaue('id')}.json")
+    saveJson(template, "${pathModelsItem}${section.getChildValue('path')}${section.getChildValue('id')}.json")
 }
