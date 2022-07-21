@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage
 import com.bjmh.lib.io.config.ConfigPath
 import com.bjmh.lib.io.config.ConfigSection
+import com.bjmh.lib.io.config.ConfigNode
 
 // Layers are not operated on
 if (section.getChild('layer') != null && section.getChildValue('layer') == 'true') { return }
