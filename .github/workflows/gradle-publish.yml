@@ -9,8 +9,8 @@ jobs:
     name: Build And publish
     strategy:
       matrix:
-        java: [17]
-        os: [ubuntu-20.04, windows-2022]
+        java: ['17']
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -24,21 +24,21 @@ jobs:
           cache: gradle
 
       - name: Make gradle wrapper executable
-        if: ${{ runner.os != 'Windows' }}
+        if: ${{ matrix.os != 'windows-latest' }}
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
       
       - name: Capture Artefacts
-        if: ${{ runner.os == 'Linux' && runner.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
         uses: actions/upload-artifact@v3
         with:
           path: build/libs/
           name: Jars
 
       - name: Upload Assets
-        if: ${{ runner.os == 'Linux' && runner.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
