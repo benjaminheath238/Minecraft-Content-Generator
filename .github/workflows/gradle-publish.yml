@@ -34,7 +34,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
         uses: actions/upload-artifact@v3
         with:
-          path: build/libs/
+          path: app/build/libs/
           name: Jars
 
       - name: Upload Assets
