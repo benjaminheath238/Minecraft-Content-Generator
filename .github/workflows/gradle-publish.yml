@@ -1,0 +1,52 @@
+name: Publishing
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build And publish
+    strategy:
+      matrix:
+        java: [17]
+        os: [ubuntu-20.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Export Tag & Version Number to Environment
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          echo "TAG=${TAG}" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      
+      - name: Setup JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: temurin
+          cache: gradle
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+      
+      - name: Capture Artefacts
+        if: ${{ runner.os == 'Linux' && runner.java == '17' }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: build/libs/
+          name: Jars
+
+      - name: Upload Assets
+        if: ${{ runner.os == 'Linux' && runner.java == '17' }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: build/libs/Silitics-${{ env.VERSION }}.jar
+          asset_name: Silitics-${{ env.VERSION }}.jar
+          asset_content_type: application/java-archive
+
