@@ -29,6 +29,12 @@ jobs:
           distribution: temurin
           cache: gradle
 
+      - name: Install neutron to maven local
+        run: |
+          git clone https://github.com/benjaminheath238/Neutron.git
+          cd neutron
+          mvn install
+
       - name: Make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
