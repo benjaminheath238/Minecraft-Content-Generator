@@ -43,7 +43,7 @@ dependencies {
 
     compile('com.google.code.gson:gson:2.9.0')
 
-    compile('com.bjmh.lib:neutron:1.5.1')  
+    compile('com.bjmh.lib:Neutron:1.5.1')  
   }
 
 application {
